@@ -268,6 +268,91 @@
   footer .mail:hover .arrow { transform: translate(4px,-4px); }
   footer .bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 56px; color: var(--faint); }
 
+
+  /* ---------- the loop (scrollytelling) ---------- */
+  .loop { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: start; }
+  @media (max-width: 860px) { .loop { grid-template-columns: 1fr; gap: 18px; } }
+  .circuit-wrap { position: sticky; top: 76px; }
+  @media (max-width: 860px) {
+    .circuit-wrap { top: 60px; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 8px 16px 6px; margin: 0 -16px; }
+    .circuit svg { height: 34vh; max-height: 300px; }
+    .circuit .hud .hud-l { display: none; }
+    .circuit-wrap .hint { display: none; }
+    .circuit > div:last-child { padding: 34px 8px 6px !important; }
+  }
+  .circuit {
+    position: relative; border: 1px solid var(--line); border-radius: 24px; background: var(--surface); overflow: hidden;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 24px 24px; background-position: center;
+  }
+  .circuit svg { display: block; width: 100%; height: auto; }
+  .circuit .hud { position: absolute; top: 14px; left: 16px; right: 16px; display: flex; justify-content: space-between; color: var(--faint); pointer-events: none; }
+  .circuit .hud b { color: var(--accent); font-weight: 500; }
+  .circuit .scan { position: absolute; left: 0; right: 0; height: 90px; top: -90px; pointer-events: none; background: linear-gradient(180deg, transparent, var(--glow), transparent); opacity: .5; animation: scan 6s linear infinite; }
+  @keyframes scan { to { top: 100%; } }
+
+  /* svg parts */
+  .node rect { fill: var(--bg-2); stroke: var(--line-strong); stroke-width: 1; transition: stroke .4s, fill .4s, filter .4s; }
+  .node text { fill: var(--muted); font-family: Inter, system-ui, sans-serif; font-size: 12.5px; font-weight: 500; transition: fill .4s; }
+  .node .ic { stroke: var(--muted); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: stroke .4s; }
+  .node.on rect { stroke: var(--accent); fill: color-mix(in srgb, var(--accent) 12%, var(--bg-2)); filter: drop-shadow(0 0 14px var(--glow)); }
+  .node.on text { fill: var(--text); }
+  .node.on .ic { stroke: var(--accent); }
+  .node.src rect { stroke-dasharray: 4 4; }
+  .wire { fill: none; stroke: var(--line-strong); stroke-width: 1.5; transition: stroke .4s; }
+  .wire.on { stroke: var(--accent); stroke-dasharray: 6 8; animation: flow 1s linear infinite; filter: drop-shadow(0 0 6px var(--glow)); }
+  .wire.wip.on { stroke: var(--accent-3); }
+  @keyframes flow { to { stroke-dashoffset: -28; } }
+  .dot { fill: var(--accent-2); opacity: 0; transition: opacity .3s; filter: drop-shadow(0 0 6px var(--accent-2)); }
+  .dot.on { opacity: 1; }
+  .dot.wip { fill: var(--accent-3); filter: drop-shadow(0 0 6px var(--accent-3)); }
+  .label-wip { fill: var(--accent-3); font-family: "JetBrains Mono", monospace; font-size: 9px; letter-spacing: .12em; opacity: 0; transition: opacity .4s; }
+  .label-wip.on { opacity: 1; }
+  .ring { fill: none; stroke: var(--accent); stroke-width: 1; opacity: 0; }
+  .node.on .ring { animation: ring 1.8s ease-out infinite; }
+  @keyframes ring { 0% { opacity: .7; transform: scale(1); } 100% { opacity: 0; transform: scale(1.25); } }
+
+  /* steps */
+  .steps { display: flex; flex-direction: column; gap: 18px; padding-top: 10px; }
+  .step {
+    border: 1px solid var(--line); border-radius: 20px; padding: 24px 24px 22px; background: var(--surface);
+    opacity: .38; transform: translateX(10px) scale(.985); transition: opacity .45s ease, transform .45s cubic-bezier(.2,.8,.2,1), border-color .45s, box-shadow .45s;
+    cursor: pointer; position: relative; overflow: hidden; min-height: 52vh; display: flex; flex-direction: column; justify-content: center;
+  }
+  @media (max-width: 860px) { .step { min-height: 0; transform: none; } }
+  .step.on { opacity: 1; transform: none; border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset, 0 20px 50px -30px var(--glow); }
+  .step .k { display: flex; justify-content: space-between; align-items: center; color: var(--faint); margin-bottom: 14px; }
+  .step .k .st { color: var(--accent); }
+  .step .k .st.wip { color: var(--accent-3); }
+  .step h3 { font-family: "Space Grotesk", sans-serif; font-size: clamp(22px, 2.6vw, 30px); margin: 0 0 12px; letter-spacing: -.025em; line-height: 1.1; }
+  .step h3 .serif { color: var(--accent); }
+  .step .ba { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+  @media (max-width: 480px) { .step .ba { grid-template-columns: 1fr; } }
+  .step .ba div { border-radius: 12px; padding: 12px 14px; background: var(--bg-2); border: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+  .step .ba div b { display: block; color: var(--faint); margin-bottom: 4px; font-weight: 500; }
+  .step .ba div.after { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); color: var(--text); }
+  .step .ba div.after b { color: var(--accent); }
+  .step .bar { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(var(--accent), var(--accent-2)); transform: scaleY(0); transform-origin: top; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+  .step.on .bar { transform: scaleY(1); }
+
+  /* ---------- minutes grid ---------- */
+  .compress { margin-top: 64px; border: 1px solid var(--line); border-radius: 24px; padding: 28px; background: var(--surface); position: relative; overflow: hidden; }
+  .compress .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 22px; }
+  .compress h3 { font-family: "Space Grotesk", sans-serif; margin: 0; font-size: clamp(22px, 3vw, 32px); letter-spacing: -.03em; line-height: 1.05; }
+  .compress h3 .serif { color: var(--accent); }
+  .compress .counter { font-family: "Space Grotesk", sans-serif; font-size: clamp(44px, 6vw, 72px); font-weight: 700; letter-spacing: -.05em; line-height: 1; display: flex; align-items: baseline; gap: 6px; }
+  .compress .counter small { font-size: .3em; color: var(--muted); letter-spacing: 0; font-weight: 600; }
+  .compress .counter .v { min-width: 2.2ch; text-align: right; font-variant-numeric: tabular-nums; }
+  .cells { display: grid; grid-template-columns: repeat(30, 1fr); gap: 5px; }
+  @media (max-width: 600px) { .cells { grid-template-columns: repeat(18, 1fr); gap: 4px; } }
+  .cell { aspect-ratio: 1; border-radius: 3px; background: var(--text); opacity: .85; transition: background .35s, opacity .35s, transform .35s; }
+  .cell.off { background: var(--line); opacity: .5; transform: scale(.55); }
+  .cell.keep { background: var(--accent); opacity: 1; box-shadow: 0 0 10px var(--glow); }
+  .compress .legend { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 18px; color: var(--muted); font-size: 13px; align-items: center; }
+  .compress .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 8px; vertical-align: -1px; }
+  .compress .replay { margin-left: auto; }
+
   /* ---------- reveal ---------- */
   .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
   .reveal.in { opacity: 1; transform: none; }
@@ -307,7 +392,7 @@
       <p class="lede reveal d2">BITS Pilani student (MSc Chemistry + B.E. Manufacturing Engineering), currently running operations for a cluster of <strong>80+ households</strong> at Tell M. I automate the loop, measure the time saved, then go find the next one.</p>
       <div class="hero-actions reveal d3">
         <a class="btn primary" href="mailto:maliwaldhruv2302@gmail.com">Email me <span class="arrow">→</span></a>
-        <a class="btn" href="#work">See the work <span class="arrow">↓</span></a>
+        <a class="btn" href="#loop">See the work <span class="arrow">↓</span></a>
       </div>
     </div>
 
@@ -340,7 +425,7 @@
 
 <section id="context">
   <div class="wrap">
-    <div class="sec-head reveal"><h2>The <span class="serif">context</span></h2><span class="idx mono">01 / 03</span></div>
+    <div class="sec-head reveal"><h2>The <span class="serif">context</span></h2><span class="idx mono">01 / 04</span></div>
     <div class="context">
       <p class="reveal d1">Since June 2026 I have been doing my PS-II internship at <strong>Tell M</strong> (Curious Digital Pvt. Ltd.) in Bengaluru, as Operations Intern and Program Manager. I own a cluster of 80+ households and everything that keeps their service running: inventory tracking, meal plan generation and end-to-end ordering.</p>
       <p class="reveal d2">Most of that work used to be manual. A cook photographs the kitchen, someone reads the photo and types the numbers in, someone else writes the week's meal plan, and someone else again reconciles orders and invoices. I rebuilt each step as a small automation on top of the team's internal Copilot. Together they cut the full loop from <strong class="hl">3 hours to 13 minutes per household</strong>.</p>
@@ -348,9 +433,76 @@
   </div>
 </section>
 
+
+<section id="loop">
+  <div class="wrap">
+    <div class="sec-head reveal"><h2>The <span class="serif">loop</span>, one household</h2><span class="idx mono">02 / 04</span></div>
+    <div class="loop">
+      <div class="circuit-wrap reveal d1">
+        <div class="circuit">
+          <div class="hud mono"><span class="hud-l">TELL M · OPS CIRCUIT</span><span>ACTIVE: <b id="hud-step">PERISHABLE TRACKER</b></span></div>
+          <div class="scan" aria-hidden="true"></div>
+          <div style="padding:44px 12px 12px"><svg viewBox="0 0 640 380" role="img" aria-label="Diagram of the operations loop: cook photo to perishable tracker to dashboard, dashboard to meal plan to cook briefing, receipts to tracker to auto-invoice, and the photo audit in progress"><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5 0 10z" fill="var(--accent)"/></marker></defs><path class="wire " id="w1" d="M180 63 H245"/><path class="wire " id="w2" d="M395 63 H460"/><path class="wire " id="w3" d="M535 86 V170"/><path class="wire " id="w4" d="M460 193 H395"/><path class="wire " id="w5" d="M180 323 H245"/><path class="wire " id="w6" d="M395 323 H460"/><path class="wire wip" id="w7" d="M105 86 V170"/><path class="wire " id="w8" d="M245 193 H180"/><g class="node src" id="n-photo" transform="translate(30,40)"><rect class="ring" x="-4" y="-4" width="158" height="54" rx="14" style="transform-origin:75.0px 23.0px"/><rect width="150" height="46" rx="12"/><g transform="translate(12,11)"><path class="ic" d="M4 8h3l2-2h6l2 2h3v10H4z"/><circle class="ic" cx="12" cy="13" r="3"/></g><text x="44" y="29">Cook's photo</text></g><g class="node " id="n-perish" transform="translate(245,40)"><rect class="ring" x="-4" y="-4" width="158" height="54" rx="14" style="transform-origin:75.0px 23.0px"/><rect width="150" height="46" rx="12"/><g transform="translate(12,11)"><path class="ic" d="M4 5h7v6H4zM13 5h7v6h-7zM4 13h7v6H4zM13 13h7v6h-7z"/></g><text x="44" y="29">Perishable tracker</text></g><g class="node " id="n-dash" transform="translate(460,40)"><rect class="ring" x="-4" y="-4" width="158" height="54" rx="14" style="transform-origin:75.0px 23.0px"/><rect width="150" height="46" rx="12"/><g transform="translate(12,11)"><path class="ic" d="M4 19h16M7 16v-5M12 16V7M17 16v-8"/></g><text x="44" y="29">Live dashboard</text></g><g class="node " id="n-plan" transform="translate(460,170)"><rect class="ring" x="-4" y="-4" width="158" height="54" rx="14" style="transform-origin:75.0px 23.0px"/><rect width="150" height="46" rx="12"/><g transform="translate(12,11)"><path class="ic" d="M5 7h14M5 12h14M5 17h9"/></g><text x="44" y="29">Meal plan</text></g><g class="node " id="n-brief" transform="translate(245,170)"><rect class="ring" x="-4" y="-4" width="158" height="54" rx="14" style="transform-origin:75.0px 23.0px"/><rect width="150" height="46" rx="12"/><g transform="translate(12,11)"><path class="ic" d="M4 5h16v10H9l-4 4z"/></g><text x="44" y="29">Cook briefing</text></g><g class="node " id="n-audit" transform="translate(30,170)"><rect class="ring" x="-4" y="-4" width="158" height="54" rx="14" style="transform-origin:75.0px 23.0px"/><rect width="150" height="46" rx="12"/><g transform="translate(12,11)"><path class="ic" d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z"/><circle class="ic" cx="12" cy="12" r="3"/></g><text x="44" y="29">Smart photo audit</text></g><g class="node src" id="n-rcpt" transform="translate(30,300)"><rect class="ring" x="-4" y="-4" width="158" height="54" rx="14" style="transform-origin:75.0px 23.0px"/><rect width="150" height="46" rx="12"/><g transform="translate(12,11)"><path class="ic" d="M6 3h12v18l-2-1.5L14 21l-2-1.5L10 21l-2-1.5L6 21zM9 8h6M9 12h6"/></g><text x="44" y="29">Order receipts</text></g><g class="node " id="n-track" transform="translate(245,300)"><rect class="ring" x="-4" y="-4" width="158" height="54" rx="14" style="transform-origin:75.0px 23.0px"/><rect width="150" height="46" rx="12"/><g transform="translate(12,11)"><ellipse class="ic" cx="12" cy="6" rx="7" ry="3"/><path class="ic" d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></g><text x="44" y="29">Receipt tracker</text></g><g class="node " id="n-invoice" transform="translate(460,300)"><rect class="ring" x="-4" y="-4" width="158" height="54" rx="14" style="transform-origin:75.0px 23.0px"/><rect width="150" height="46" rx="12"/><g transform="translate(12,11)"><path class="ic" d="M5 3h14v18H5zM9 8h6M9 12h6M9 16h3"/></g><text x="44" y="29">Auto-invoice</text></g><text class="label-wip" id="lbl-wip" x="120" y="134">IN PROGRESS</text><circle class="dot " r="4" data-w="w1"><animateMotion dur="1.6s" begin="0s" repeatCount="indefinite" rotate="auto"><mpath href="#w1"/></animateMotion></circle><circle class="dot " r="4" data-w="w1"><animateMotion dur="1.6s" begin="0.8s" repeatCount="indefinite" rotate="auto"><mpath href="#w1"/></animateMotion></circle><circle class="dot " r="4" data-w="w2"><animateMotion dur="1.6s" begin="0s" repeatCount="indefinite" rotate="auto"><mpath href="#w2"/></animateMotion></circle><circle class="dot " r="4" data-w="w2"><animateMotion dur="1.6s" begin="0.8s" repeatCount="indefinite" rotate="auto"><mpath href="#w2"/></animateMotion></circle><circle class="dot " r="4" data-w="w3"><animateMotion dur="1.6s" begin="0s" repeatCount="indefinite" rotate="auto"><mpath href="#w3"/></animateMotion></circle><circle class="dot " r="4" data-w="w3"><animateMotion dur="1.6s" begin="0.8s" repeatCount="indefinite" rotate="auto"><mpath href="#w3"/></animateMotion></circle><circle class="dot " r="4" data-w="w4"><animateMotion dur="1.6s" begin="0s" repeatCount="indefinite" rotate="auto"><mpath href="#w4"/></animateMotion></circle><circle class="dot " r="4" data-w="w4"><animateMotion dur="1.6s" begin="0.8s" repeatCount="indefinite" rotate="auto"><mpath href="#w4"/></animateMotion></circle><circle class="dot " r="4" data-w="w5"><animateMotion dur="1.6s" begin="0s" repeatCount="indefinite" rotate="auto"><mpath href="#w5"/></animateMotion></circle><circle class="dot " r="4" data-w="w5"><animateMotion dur="1.6s" begin="0.8s" repeatCount="indefinite" rotate="auto"><mpath href="#w5"/></animateMotion></circle><circle class="dot " r="4" data-w="w6"><animateMotion dur="1.6s" begin="0s" repeatCount="indefinite" rotate="auto"><mpath href="#w6"/></animateMotion></circle><circle class="dot " r="4" data-w="w6"><animateMotion dur="1.6s" begin="0.8s" repeatCount="indefinite" rotate="auto"><mpath href="#w6"/></animateMotion></circle><circle class="dot wip" r="4" data-w="w7"><animateMotion dur="1.6s" begin="0s" repeatCount="indefinite" rotate="auto"><mpath href="#w7"/></animateMotion></circle><circle class="dot wip" r="4" data-w="w7"><animateMotion dur="1.6s" begin="0.8s" repeatCount="indefinite" rotate="auto"><mpath href="#w7"/></animateMotion></circle></svg></div>
+        </div>
+        <p class="mono hint" style="color:var(--faint);margin:12px 2px 0">Scroll the steps, or tap one, to light up its part of the circuit.</p>
+      </div>
+
+      <div class="steps">
+        <article class="step on" data-step="0" data-name="Perishable tracker">
+          <span class="bar"></span>
+          <div class="k mono"><span>Step 01</span><span class="st">Shipped</span></div>
+          <h3>One photo becomes <span class="serif">the inventory.</span></h3>
+          <p style="margin:0;color:var(--muted)">The cook takes one photo of the stock. The photo is turned into a structured data entry, and that entry feeds a live dashboard, so nobody transcribes inventory by hand any more.</p>
+          <div class="ba"><div><b>Before</b>Someone reads the photo and types the numbers in.</div><div class="after"><b>After</b>Photo in, dashboard updated. No typing.</div></div>
+        </article>
+
+        <article class="step" data-step="1" data-name="Automated meal plans">
+          <span class="bar"></span>
+          <div class="k mono"><span>Step 02</span><span class="st">Shipped</span></div>
+          <h3>The plan writes itself, then <span class="serif">briefs the cook.</span></h3>
+          <p style="margin:0;color:var(--muted)">Copilot-based meal plans generated for each household, followed by an automated briefing for the cook so the plan actually reaches the kitchen without a person relaying it.</p>
+          <div class="ba"><div><b>Before</b>Someone writes the week's meal plan and passes it along.</div><div class="after"><b>After</b>Generated per household, briefing sent automatically.</div></div>
+        </article>
+
+        <article class="step" data-step="2" data-name="Receipt tracker">
+          <span class="bar"></span>
+          <div class="k mono"><span>Step 03</span><span class="st">Shipped</span></div>
+          <h3>Every receipt lands in one place and <span class="serif">invoices itself.</span></h3>
+          <p style="margin:0;color:var(--muted)">A cross-platform tracker that collects ordering receipts in one place and generates the invoices automatically through the internal Copilot, closing the ordering loop end to end.</p>
+          <div class="ba"><div><b>Before</b>Someone reconciles orders and invoices by hand.</div><div class="after"><b>After</b>Receipts tracked across platforms, invoice generated.</div></div>
+        </article>
+
+        <article class="step" data-step="3" data-name="Smart photo audit">
+          <span class="bar"></span>
+          <div class="k mono"><span>Step 04</span><span class="st wip">In progress</span></div>
+          <h3>Look at <span class="serif">5–10</span> photos, not 30–40.</h3>
+          <p style="margin:0;color:var(--muted)">Verifying 30–40 cook photos a day doesn't scale. This audit flags only the photos worth a human look, with the goal of bringing daily verifications down to a targeted 5–10.</p>
+          <div class="ba"><div><b>Today</b>30–40 cook photos verified by a person, every day.</div><div class="after"><b>Target</b>5–10 targeted checks a day.</div></div>
+        </article>
+      </div>
+    </div>
+
+    <div class="compress reveal" id="compress">
+      <div class="head">
+        <div>
+          <span class="mono" style="color:var(--faint)">Minutes per household, full loop</span>
+          <h3 style="margin-top:6px">180 minutes of work, <span class="serif">compressed to 13.</span></h3>
+        </div>
+        <div class="counter"><span class="v" id="cnt">180</span><small>min</small></div>
+      </div>
+      <div class="cells" id="cells" aria-hidden="true"></div>
+      <div class="legend mono">
+        <span><i style="background:var(--text);opacity:.85"></i>Before: 180 min</span>
+        <span><i style="background:var(--accent)"></i>After: 13 min</span>
+        <button class="btn replay" id="replay" type="button" style="font-size:12px;padding:8px 14px">Replay ↻</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="work">
   <div class="wrap">
-    <div class="sec-head reveal"><h2>The <span class="serif">work</span></h2><span class="idx mono">02 / 03</span></div>
+    <div class="sec-head reveal"><h2>The <span class="serif">work</span>, at a glance</h2><span class="idx mono">03 / 04</span></div>
     <div class="bento">
 
       <article class="card narrow reveal">
@@ -404,7 +556,7 @@
 
 <section id="how">
   <div class="wrap">
-    <div class="sec-head reveal"><h2>How I <span class="serif">work</span></h2><span class="idx mono">03 / 03</span></div>
+    <div class="sec-head reveal"><h2>How I <span class="serif">work</span></h2><span class="idx mono">04 / 04</span></div>
     <div class="how reveal d1">
       <div>
         <span class="n mono">01</span>
@@ -440,6 +592,7 @@
 <script>
 (function () {
   var root = document.documentElement;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // theme toggle (persists per browser; falls back to system preference)
   try { var saved = localStorage.getItem('theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
@@ -483,9 +636,70 @@
     function loop() { gx += (tx - gx) * .18; gy += (ty - gy) * .18; glow.style.left = gx + 'px'; glow.style.top = gy + 'px'; if (Math.abs(tx - gx) > .5 || Math.abs(ty - gy) > .5) requestAnimationFrame(loop); else raf = false; }
   }
 
+
+  // ---- the loop: step -> circuit mapping ----
+  var MAP = [
+    { nodes: ['n-photo','n-perish','n-dash'], wires: ['w1','w2'] },
+    { nodes: ['n-dash','n-plan','n-brief'],   wires: ['w3','w4','w8'] },
+    { nodes: ['n-rcpt','n-track','n-invoice'], wires: ['w5','w6'] },
+    { nodes: ['n-photo','n-audit'],           wires: ['w7'] }
+  ];
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var hud = document.getElementById('hud-step');
+  var lblWip = document.getElementById('lbl-wip');
+  function setStep(i) {
+    steps.forEach(function (s, j) { s.classList.toggle('on', j === i); });
+    document.querySelectorAll('.node').forEach(function (n) { n.classList.remove('on'); });
+    document.querySelectorAll('.wire').forEach(function (w) { w.classList.remove('on'); });
+    document.querySelectorAll('.dot').forEach(function (d) { d.classList.remove('on'); });
+    MAP[i].nodes.forEach(function (id) { var el = document.getElementById(id); if (el) el.classList.add('on'); });
+    MAP[i].wires.forEach(function (id) {
+      var w = document.getElementById(id); if (w) w.classList.add('on');
+      document.querySelectorAll('.dot[data-w="' + id + '"]').forEach(function (d) { d.classList.add('on'); });
+    });
+    if (lblWip) lblWip.classList.toggle('on', i === 3);
+    if (hud) hud.textContent = steps[i].getAttribute('data-name').toUpperCase();
+  }
+  setStep(0);
+  steps.forEach(function (s, i) { s.addEventListener('click', function () { setStep(i); }); });
+  if ('IntersectionObserver' in window) {
+    var sio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) setStep(parseInt(en.target.getAttribute('data-step'), 10)); });
+    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+    steps.forEach(function (s) { sio.observe(s); });
+  }
+
+  // ---- minutes grid: 180 -> 13 ----
+  var cellsEl = document.getElementById('cells'), cnt = document.getElementById('cnt');
+  var TOTAL = 180, KEEP = 13, cells = [], playing = false;
+  for (var i = 0; i < TOTAL; i++) { var c = document.createElement('span'); c.className = 'cell'; cellsEl.appendChild(c); cells.push(c); }
+  function resetCells() { cells.forEach(function (c) { c.className = 'cell'; }); cnt.textContent = TOTAL; }
+  function play() {
+    if (playing) return; playing = true; resetCells();
+    if (reduced) { cells.forEach(function (c, i) { c.className = i < KEEP ? 'cell keep' : 'cell off'; }); cnt.textContent = KEEP; playing = false; return; }
+    var order = []; for (var i = TOTAL - 1; i >= KEEP; i--) order.push(i);
+    var idx = 0, remaining = TOTAL, start = null, dur = 2200;
+    function frame(now) {
+      if (!start) start = now;
+      var p = Math.min(1, (now - start) / dur); p = 1 - Math.pow(1 - p, 2.2);
+      var target = Math.floor(order.length * p);
+      while (idx < target) { cells[order[idx]].classList.add('off'); idx++; remaining--; }
+      cnt.textContent = remaining;
+      if (p < 1) requestAnimationFrame(frame);
+      else { for (var k = 0; k < KEEP; k++) cells[k].classList.add('keep'); cnt.textContent = KEEP; playing = false; }
+    }
+    requestAnimationFrame(frame);
+  }
+  document.getElementById('replay').addEventListener('click', function () { playing = false; play(); });
+  if ('IntersectionObserver' in window) {
+    var pio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { play(); pio.unobserve(en.target); } });
+    }, { threshold: 0.4 });
+    pio.observe(document.getElementById('compress'));
+  } else { play(); }
+
   // count-up on the stat numbers
   var counters = document.querySelectorAll('[data-count]');
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!reduced && 'IntersectionObserver' in window) {
     var cio = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
