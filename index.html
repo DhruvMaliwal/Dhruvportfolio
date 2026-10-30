@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dhruv Maliwal</title>
+<meta name="description" content="Dhruv Maliwal builds small automations that remove hours of operational work. Operations Intern & Program Manager at Tell M, BITS Pilani student.">
+<meta property="og:title" content="Dhruv Maliwal">
+<meta property="og:description" content="Builds small automations that cut a 3-hour operations loop to 13 minutes per household. BITS Pilani. Tell M, Bengaluru.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f6f2;
+    --surface: #ffffff;
+    --surface-2: #f0eee8;
+    --text: #17181a;
+    --muted: #5f6368;
+    --faint: #9a9ea3;
+    --line: #e2e0d9;
+    --accent: #d9631e;
+    --accent-ink: #ffffff;
+    --accent-soft: #fbe9dd;
+    --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px -12px rgba(0,0,0,.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121315;
+      --surface: #1a1c1f;
+      --surface-2: #202326;
+      --text: #f1f0ec;
+      --muted: #a7aaae;
+      --faint: #6f7377;
+      --line: #2b2e32;
+      --accent: #f0803a;
+      --accent-ink: #15110d;
+      --accent-soft: #33231a;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #121315;
+    --surface: #1a1c1f;
+    --surface-2: #202326;
+    --text: #f1f0ec;
+    --muted: #a7aaae;
+    --faint: #6f7377;
+    --line: #2b2e32;
+    --accent: #f0803a;
+    --accent-ink: #15110d;
+    --accent-soft: #33231a;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, .display { font-family: "Space Grotesk", Inter, system-ui, sans-serif; letter-spacing: -0.01em; }
+  a { color: inherit; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 16px; }
+
+  /* Header */
+  header { padding: 56px 0 36px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 500; color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
+  h1 { font-size: clamp(34px, 6vw, 54px); line-height: 1.05; margin: 0 0 16px; font-weight: 700; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .lede { font-size: clamp(17px, 2.2vw, 20px); color: var(--muted); max-width: 640px; margin: 0 0 26px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 18px; border-radius: 999px; text-decoration: none;
+    font-weight: 600; font-size: 15px; border: 1px solid var(--line);
+    background: var(--surface); transition: transform .12s ease, border-color .12s ease;
+  }
+  .btn:hover { transform: translateY(-1px); border-color: var(--faint); }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+  /* Stats */
+  .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+    margin: 8px 0 48px;
+  }
+  .stat { background: var(--surface); padding: 20px 18px; }
+  .stat .num { font-family: "Space Grotesk", sans-serif; font-size: clamp(26px, 4vw, 34px); font-weight: 700; line-height: 1.1; }
+  .stat .num small { font-size: .55em; color: var(--muted); font-weight: 600; margin-left: 2px; }
+  .stat .lbl { font-size: 13px; color: var(--muted); margin-top: 6px; }
+  @media (max-width: 560px) {
+    .stats { grid-template-columns: 1fr; }
+  }
+
+  /* Sections */
+  section { margin-bottom: 56px; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px; }
+  .sec-head h2 { font-size: 22px; margin: 0; font-weight: 600; }
+  .sec-head .idx { font-family: "Space Grotesk", monospace; font-size: 13px; color: var(--faint); font-weight: 600; }
+  .prose p { margin: 0 0 14px; max-width: 680px; color: var(--text); }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose strong { font-weight: 600; }
+
+  /* Work cards */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 680px) { .cards { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    padding: 22px 22px 20px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 10px;
+  }
+  .card .tag {
+    align-self: flex-start; font-size: 12px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase;
+    color: var(--accent); background: var(--accent-soft); padding: 3px 9px; border-radius: 999px;
+  }
+  .card .tag.wip { color: var(--muted); background: var(--surface-2); }
+  .card h3 { margin: 2px 0 0; font-size: 19px; font-weight: 600; line-height: 1.25; }
+  .card p { margin: 0; color: var(--muted); font-size: 15px; }
+  .card .flow {
+    margin-top: auto; padding-top: 12px; border-top: 1px dashed var(--line);
+    font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  }
+  .card .flow span { background: var(--surface-2); padding: 3px 8px; border-radius: 6px; color: var(--text); font-weight: 500; }
+  .card .flow i { font-style: normal; color: var(--faint); }
+
+  /* How I work */
+  .how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 680px) { .how { grid-template-columns: 1fr; } }
+  .how div { background: var(--surface-2); border-radius: 14px; padding: 18px; }
+  .how h3 { margin: 0 0 6px; font-size: 16px; font-weight: 600; }
+  .how p { margin: 0; font-size: 14.5px; color: var(--muted); }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--line); padding: 32px 0 48px;
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;
+    color: var(--muted); font-size: 14px;
+  }
+  footer a { font-weight: 600; color: var(--text); text-decoration: none; border-bottom: 1.5px solid var(--accent); }
+  footer a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow"><span class="dot"></span> Operations Intern &amp; Program Manager · Tell M, Bengaluru</div>
+    <h1>Dhruv Maliwal builds the <em>small tools</em> that take hours out of an operation.</h1>
+    <p class="lede">BITS Pilani student (MSc Chemistry + B.E. Manufacturing Engineering), currently running operations for a cluster of 30+ customers at Tell M. I automate the loop, measure the time saved, then go find the next one.</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:maliwaldhruv2302@gmail.com">Email me</a>
+      <a class="btn" href="#work">See the work ↓</a>
+    </div>
+  </header>
+
+  <div class="stats" aria-label="Key numbers">
+    <div class="stat">
+      <div class="num">3h <small>→</small> 13<small>min</small></div>
+      <div class="lbl">Operations loop per household, before and after my tools</div>
+    </div>
+    <div class="stat">
+      <div class="num">30<small>+</small></div>
+      <div class="lbl">Households and companies in the cluster I manage</div>
+    </div>
+    <div class="stat">
+      <div class="num">30–40 <small>→</small> 5–10</div>
+      <div class="lbl">Daily cook photo checks, target of the audit tool in progress</div>
+    </div>
+  </div>
+
+  <section id="context">
+    <div class="sec-head"><span class="idx">01</span><h2>Context</h2></div>
+    <div class="prose">
+      <p>Since June 2026 I have been doing my PS-II internship at <strong>Tell M</strong> (Curious Digital Pvt. Ltd.) in Bengaluru, as Operations Intern and Program Manager. I own a cluster of 30+ customers, a mix of households and companies, and everything that keeps their service running: inventory tracking, meal plan generation and end-to-end ordering.</p>
+      <p>Most of that work used to be manual. A cook photographs the kitchen, someone reads the photo and types the numbers in, someone else writes the week's meal plan, and someone else again reconciles orders and invoices. I rebuilt each step as a small automation on top of the team's internal Copilot. Together they cut the full loop from <strong>3 hours to 13 minutes per household</strong>.</p>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="sec-head"><span class="idx">02</span><h2>Work</h2></div>
+    <div class="cards">
+
+      <article class="card">
+        <span class="tag">Shipped</span>
+        <h3>Perishable tracker</h3>
+        <p>The cook takes one photo of the stock. The photo is turned into a structured data entry, and that entry feeds a live dashboard, so nobody transcribes inventory by hand any more.</p>
+        <div class="flow"><span>Cook's photo</span><i>→</i><span>Data entry</span><i>→</i><span>Dashboard</span></div>
+      </article>
+
+      <article class="card">
+        <span class="tag">Shipped</span>
+        <h3>Automated meal plans per household</h3>
+        <p>Copilot-based meal plans generated for each household, followed by an automated briefing for the cook so the plan actually reaches the kitchen without a person relaying it.</p>
+        <div class="flow"><span>Household</span><i>→</i><span>Meal plan</span><i>→</i><span>Cook briefing</span></div>
+      </article>
+
+      <article class="card">
+        <span class="tag">Shipped</span>
+        <h3>Ordering receipt tracker with auto-invoicing</h3>
+        <p>A cross-platform tracker that collects ordering receipts in one place and generates the invoices automatically through the internal Copilot, closing the ordering loop end to end.</p>
+        <div class="flow"><span>Receipts</span><i>→</i><span>Tracker</span><i>→</i><span>Auto-invoice</span></div>
+      </article>
+
+      <article class="card">
+        <span class="tag wip">In progress</span>
+        <h3>Smart photo audit</h3>
+        <p>Verifying 30–40 cook photos a day doesn't scale. This audit flags only the photos worth a human look, with the goal of bringing daily verifications down to a targeted 5–10.</p>
+        <div class="flow"><span>30–40 photos/day</span><i>→</i><span>Audit</span><i>→</i><span>5–10 targeted checks</span></div>
+      </article>
+
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="sec-head"><span class="idx">03</span><h2>How I work</h2></div>
+    <div class="how">
+      <div>
+        <h3>Start from the loop, not the tool</h3>
+        <p>The useful question is where the hours go between the cook's photo and the invoice. The tool follows from that answer.</p>
+      </div>
+      <div>
+        <h3>Ship the smallest version</h3>
+        <p>Every tool here is a thin automation on the team's internal Copilot, not a new platform. Small enough to ship, big enough to remove a manual step.</p>
+      </div>
+      <div>
+        <h3>Keep the number honest</h3>
+        <p>3 hours to 13 minutes is the measured loop for a household, not an estimate. The photo audit gets its own number once it's running.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>Dhruv Maliwal · BITS Pilani · Bengaluru</div>
+    <div><a href="mailto:maliwaldhruv2302@gmail.com">maliwaldhruv2302@gmail.com</a></div>
+  </footer>
+
+</div>
+</body>
+</html>
