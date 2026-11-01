@@ -213,6 +213,13 @@
   .company .chips span { font-size: 12px; font-weight: 500; padding: 5px 10px; border-radius: 999px; border: 1px solid rgba(244,241,234,.18); color: rgba(244,241,234,.85); background: rgba(255,255,255,.04); backdrop-filter: blur(6px); }
   .company .btn.co-cta { background: #f4f1ea; color: #09090b; border-color: #f4f1ea; }
   .company .btn.co-cta:hover { box-shadow: 0 10px 30px -10px var(--glow); }
+
+  /* hero buttons, styled like the Tell M panel */
+  .hero-actions .btn { color: #f4f1ea; border: 1.5px solid transparent; background: linear-gradient(#09090b, #09090b) padding-box, conic-gradient(from var(--ang), rgba(255,255,255,.14), var(--accent), rgba(255,255,255,.14) 40%, var(--accent-3) 70%, rgba(255,255,255,.14)) border-box; animation: spin-border 9s linear infinite; padding: 12px 20px; }
+  .hero-actions .btn:hover { background: linear-gradient(#141317, #141317) padding-box, conic-gradient(from var(--ang), var(--accent), var(--accent-2), var(--accent-3), var(--accent)) border-box; box-shadow: 0 12px 32px -12px var(--glow); }
+  .hero-actions .btn.primary { background: #f4f1ea; color: #09090b; border-color: #f4f1ea; animation: none; }
+  .hero-actions .btn.primary:hover { background: #fff; box-shadow: 0 12px 32px -10px var(--glow); }
+
   /* ---------- marquee ---------- */
   .marquee { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); overflow: hidden; padding: 14px 0; position: relative; z-index: 2; background: color-mix(in srgb, var(--bg) 60%, transparent); }
   .marquee .track { display: flex; gap: 48px; width: max-content; animation: marquee 32s linear infinite; }
