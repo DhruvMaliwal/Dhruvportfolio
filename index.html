@@ -182,19 +182,37 @@
 
 
   /* ---------- company card ---------- */
-  .company { margin-top: 40px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: grid; grid-template-columns: auto 1fr auto; gap: 22px; align-items: center; padding: 20px 22px; position: relative; overflow: hidden; }
-  @media (max-width: 760px) { .company { grid-template-columns: auto 1fr; align-items: start; } .company .co-right { grid-column: 1 / -1; } .company .co-logo { width: 56px; height: 56px; border-radius: 14px; } .company .co-logo svg { width: 34px; } }
-  .company .co-logo { width: 72px; height: 72px; border-radius: 18px; background: var(--text); color: var(--bg); display: grid; place-items: center; flex: none; }
-  .company .co-logo svg { width: 44px; height: auto; display: block; }
-  .company .co-main .k { color: var(--faint); display: block; margin-bottom: 6px; }
-  .company .co-main h2 { font-family: "Space Grotesk", sans-serif; margin: 0; font-size: 22px; letter-spacing: -.02em; font-weight: 600; line-height: 1.1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
-  .company .co-main h2 small { font-family: Inter, sans-serif; font-weight: 400; font-size: 14px; color: var(--muted); letter-spacing: 0; }
-  .company .co-main p { margin: 8px 0 0; color: var(--muted); font-size: 15px; max-width: 60ch; }
-  .company .co-main p em { font-style: normal; color: var(--text); }
-  .company .co-right { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+  @property --ang { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+  .company-wrap { margin-top: 44px; position: relative; border-radius: 28px; padding: 1.5px; background: conic-gradient(from var(--ang), rgba(255,255,255,.06), var(--accent), rgba(255,255,255,.06) 40%, var(--accent-3) 70%, rgba(255,255,255,.06)); animation: spin-border 9s linear infinite; }
+  @keyframes spin-border { to { --ang: 360deg; } }
+  .company { position: relative; overflow: hidden; border-radius: 27px; background: #09090b; color: #f4f1ea; display: grid; grid-template-columns: 1.25fr 1fr; gap: 28px; padding: 30px 32px 28px; min-height: 250px; isolation: isolate; }
+  @media (max-width: 760px) { .company { grid-template-columns: 1fr; padding: 24px 20px 22px; } }
+  .company::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(640px 320px at 85% 50%, rgba(255,106,61,.22), transparent 60%), radial-gradient(500px 300px at 10% 110%, rgba(139,124,255,.18), transparent 60%); }
+  .company .wave { position: absolute; right: -4%; top: 50%; width: 62%; max-width: 640px; transform: translateY(-50%); z-index: -1; opacity: .9; pointer-events: none; }
+  @media (max-width: 760px) { .company .wave { width: 120%; right: -30%; top: 36%; opacity: .5; } }
+  .company .wave path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .company .wave .ghost { stroke: rgba(255,255,255,.08); stroke-width: 16; }
+  .company .wave .draw { stroke: url(#wavegrad); stroke-width: 16; stroke-dasharray: 1200; stroke-dashoffset: 1200; animation: draw 5s cubic-bezier(.4,0,.2,1) infinite; filter: drop-shadow(0 0 14px rgba(255,106,61,.45)); }
+  @keyframes draw { 0% { stroke-dashoffset: 1200; opacity: 1; } 55% { stroke-dashoffset: 0; opacity: 1; } 80% { stroke-dashoffset: 0; opacity: 0; } 100% { stroke-dashoffset: 1200; opacity: 0; } }
+  .company .co-head { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+  .company .co-logo { width: 64px; height: 64px; border-radius: 18px; background: #f4f1ea; color: #09090b; display: grid; place-items: center; flex: none; box-shadow: 0 10px 30px -12px rgba(0,0,0,.8), inset 0 0 0 1px rgba(0,0,0,.08); transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+  .company .co-logo:hover { transform: rotate(-6deg) scale(1.04); }
+  .company .co-logo svg { width: 40px; height: auto; display: block; }
+  .company .co-head .k { color: rgba(244,241,234,.5); display: block; margin-bottom: 4px; }
+  .company .co-head h2 { font-family: "Space Grotesk", sans-serif; margin: 0; font-size: 28px; letter-spacing: -.03em; font-weight: 700; line-height: 1; }
+  .company .co-head small { display: block; font-size: 13px; color: rgba(244,241,234,.55); margin-top: 6px; font-weight: 400; }
+  .company .tag-line { font-family: "Instrument Serif", serif; font-style: italic; font-size: clamp(24px, 3.2vw, 38px); line-height: 1.05; letter-spacing: -.01em; margin: 0 0 14px; max-width: 16ch; }
+  .company .tag-line b { font-weight: 400; background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .company .desc { margin: 0; color: rgba(244,241,234,.7); font-size: 15px; max-width: 48ch; line-height: 1.6; }
+  .company .co-right { display: flex; flex-direction: column; justify-content: space-between; gap: 18px; align-items: flex-start; }
+  @media (min-width: 761px) { .company .co-right { align-items: flex-end; text-align: right; } }
+  .company .status { display: inline-flex; align-items: center; gap: 8px; color: rgba(244,241,234,.6); }
+  .company .status i { width: 7px; height: 7px; border-radius: 50%; background: #2fd27a; box-shadow: 0 0 0 0 rgba(47,210,122,.6); animation: pulse 2s infinite; }
   .company .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .company .chips span { font-size: 12px; font-weight: 500; padding: 4px 9px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--muted); }
-
+  @media (min-width: 761px) { .company .chips { justify-content: flex-end; } }
+  .company .chips span { font-size: 12px; font-weight: 500; padding: 5px 10px; border-radius: 999px; border: 1px solid rgba(244,241,234,.18); color: rgba(244,241,234,.85); background: rgba(255,255,255,.04); backdrop-filter: blur(6px); }
+  .company .btn.co-cta { background: #f4f1ea; color: #09090b; border-color: #f4f1ea; }
+  .company .btn.co-cta:hover { box-shadow: 0 10px 30px -10px var(--glow); }
   /* ---------- marquee ---------- */
   .marquee { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); overflow: hidden; padding: 14px 0; position: relative; z-index: 2; background: color-mix(in srgb, var(--bg) 60%, transparent); }
   .marquee .track { display: flex; gap: 48px; width: max-content; animation: marquee 32s linear infinite; }
@@ -413,18 +431,28 @@
     </div>
 
 
-    <aside class="company reveal d3" aria-label="Where I work">
-      <a class="co-logo" href="https://tellm.co" target="_blank" rel="noopener" aria-label="Tell M website"><svg viewBox="0 0 293 89" fill="none" aria-hidden="true"><path d="M215.93 0C228.744 0 238.021 6.41096 244.786 14.2412C251.229 21.6987 256.165 31.3494 260.37 39.4648C264.886 48.1812 268.67 55.3613 273.129 60.5273C277.266 65.3209 281.07 67.3203 285.69 67.3203H292.05V88.8203H285.69C272.881 88.8203 263.611 82.4041 256.854 74.5752C250.418 67.1189 245.484 57.4689 241.28 49.3555C236.765 40.6411 232.979 33.4619 228.517 28.2969C224.376 23.5046 220.565 21.5 215.93 21.5C211.295 21.5001 207.487 23.5032 203.351 28.2939C198.891 33.4586 195.109 40.6378 190.596 49.3535C186.394 57.4677 181.462 67.1194 175.022 74.5771C168.26 82.4087 158.985 88.8203 146.17 88.8203C133.355 88.8203 124.08 82.4081 117.318 74.5762C110.879 67.1179 105.947 57.4665 101.747 49.3516C97.2354 40.635 93.4553 33.4561 88.999 28.291C84.8652 23.4997 81.0638 21.5001 76.4404 21.5C71.8153 21.5 68.0081 23.5016 63.8672 28.2959C59.4052 33.462 55.618 40.6424 51.1006 49.3574C46.8946 57.4718 41.9579 67.1211 35.5195 74.5771C28.7601 82.405 19.4883 88.8203 6.67969 88.8203H0V67.3203H6.67969C11.3011 67.3203 15.1068 65.32 19.2471 60.5254C23.7082 55.359 27.4951 48.1784 32.0127 39.4629C36.219 31.3481 41.1557 21.6985 47.5957 14.2422C54.357 6.41398 63.6306 0 76.4404 0C89.2515 0.00014264 98.5211 6.41533 105.277 14.2461C111.711 21.7036 116.641 31.3553 120.841 39.4688C125.352 48.1837 129.133 55.3622 133.592 60.5264C137.728 65.3167 141.535 67.3203 146.17 67.3203C150.805 67.3203 154.612 65.3163 158.749 60.5254C163.208 55.3607 166.991 48.1824 171.504 39.4668C175.706 31.3525 180.639 21.701 187.078 14.2432C193.84 6.41171 203.115 0.000101787 215.93 0Z" fill="currentColor"/></svg></a>
+    <div class="company-wrap reveal d3">
+    <aside class="company" aria-label="Where I work">
+      <svg class="wave" viewBox="0 0 640 220" aria-hidden="true">
+        <defs><linearGradient id="wavegrad" x1="0" x2="1"><stop offset="0" stop-color="#ff6a3d"/><stop offset=".6" stop-color="#ffb347"/><stop offset="1" stop-color="#8b7cff"/></linearGradient></defs>
+        <path class="ghost" d="M20 150 C 90 150 90 50 160 50 S 230 150 300 150 S 370 50 440 50 S 510 150 580 150 L 620 150"/>
+        <path class="draw"  d="M20 150 C 90 150 90 50 160 50 S 230 150 300 150 S 370 50 440 50 S 510 150 580 150 L 620 150"/>
+      </svg>
       <div class="co-main">
-        <span class="k mono">Currently at</span>
-        <h2>Tell M <small>Curious Digital Pvt. Ltd. · Bengaluru</small></h2>
-        <p><em>"The layer between you and kitchen chaos."</em> Tell M runs the kitchen for households and companies: it plans the meals, handles grocery deliveries, coordinates the cooks and takes care of payments. The customer just tells M what they want.</p>
+        <div class="co-head">
+          <a class="co-logo" href="https://tellm.co" target="_blank" rel="noopener" aria-label="Tell M website"><svg viewBox="0 0 293 89" fill="none" aria-hidden="true"><path d="M215.93 0C228.744 0 238.021 6.41096 244.786 14.2412C251.229 21.6987 256.165 31.3494 260.37 39.4648C264.886 48.1812 268.67 55.3613 273.129 60.5273C277.266 65.3209 281.07 67.3203 285.69 67.3203H292.05V88.8203H285.69C272.881 88.8203 263.611 82.4041 256.854 74.5752C250.418 67.1189 245.484 57.4689 241.28 49.3555C236.765 40.6411 232.979 33.4619 228.517 28.2969C224.376 23.5046 220.565 21.5 215.93 21.5C211.295 21.5001 207.487 23.5032 203.351 28.2939C198.891 33.4586 195.109 40.6378 190.596 49.3535C186.394 57.4677 181.462 67.1194 175.022 74.5771C168.26 82.4087 158.985 88.8203 146.17 88.8203C133.355 88.8203 124.08 82.4081 117.318 74.5762C110.879 67.1179 105.947 57.4665 101.747 49.3516C97.2354 40.635 93.4553 33.4561 88.999 28.291C84.8652 23.4997 81.0638 21.5001 76.4404 21.5C71.8153 21.5 68.0081 23.5016 63.8672 28.2959C59.4052 33.462 55.618 40.6424 51.1006 49.3574C46.8946 57.4718 41.9579 67.1211 35.5195 74.5771C28.7601 82.405 19.4883 88.8203 6.67969 88.8203H0V67.3203H6.67969C11.3011 67.3203 15.1068 65.32 19.2471 60.5254C23.7082 55.359 27.4951 48.1784 32.0127 39.4629C36.219 31.3481 41.1557 21.6985 47.5957 14.2422C54.357 6.41398 63.6306 0 76.4404 0C89.2515 0.00014264 98.5211 6.41533 105.277 14.2461C111.711 21.7036 116.641 31.3553 120.841 39.4688C125.352 48.1837 129.133 55.3622 133.592 60.5264C137.728 65.3167 141.535 67.3203 146.17 67.3203C150.805 67.3203 154.612 65.3163 158.749 60.5254C163.208 55.3607 166.991 48.1824 171.504 39.4668C175.706 31.3525 180.639 21.701 187.078 14.2432C193.84 6.41171 203.115 0.000101787 215.93 0Z" fill="currentColor"/></svg></a>
+          <div><span class="k mono">Currently at</span><h2>Tell M<small>Curious Digital Pvt. Ltd. · Bengaluru</small></h2></div>
+        </div>
+        <p class="tag-line">The layer between you and <b>kitchen chaos.</b></p>
+        <p class="desc">Tell M runs the kitchen for households and companies: it plans the meals, handles grocery deliveries, coordinates the cooks and takes care of payments. The customer just tells M what they want.</p>
       </div>
       <div class="co-right">
+        <span class="status mono"><i></i>Operating in Bengaluru</span>
         <div class="chips"><span>Meal planning</span><span>Deliveries</span><span>Staff coordination</span><span>Payments</span></div>
-        <a class="btn" href="https://tellm.co" target="_blank" rel="noopener" style="padding:8px 14px;font-size:13px">tellm.co <span class="arrow">↗</span></a>
+        <a class="btn co-cta" href="https://tellm.co" target="_blank" rel="noopener">Visit tellm.co <span class="arrow">↗</span></a>
       </div>
     </aside>
+    </div>
 
     <div class="stats">
       <div class="stat reveal d1">
